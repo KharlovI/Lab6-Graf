@@ -34,13 +34,13 @@ int** getGrafFromFile()
 
 	int size = std::stoi(buffer);
 
-	int** graf = new int*[size];
+	int** graf = new int* [size];
 
 	for (int i = 0; i < size; i++)
 	{
 		graf[i] = new int[size];
 	}
-	
+
 	std::string* buffer2 = new std::string[size];
 
 	for (int i = 0; f; i++)
@@ -179,14 +179,14 @@ void findWay(int size, int** grafCopy) // pow(size,0.5)
 
 	int normSize = getCountOfOutputs(output);
 
-	std::cout << std::endl;
+	//std::cout << std::endl;
 
 	for (int i = 0; input[i] != -1; i++)
 	{
-		std::cout << output[i] << " " << input[i] << std::endl;
+		//std::cout << output[i] << " " << input[i] << std::endl;
 	}
 
-	std::cout << std::endl;
+	//std::cout << std::endl;
 
 	int* bufferinput = new int[normSize + 1];
 
@@ -207,7 +207,7 @@ void findWay(int size, int** grafCopy) // pow(size,0.5)
 
 	for (int i = 0; output[i] != -1; i++)
 	{
-		for ( j = 0; output[j] != -1; j++)
+		for (j = 0; output[j] != -1; j++)
 		{
 			bufferinput[j] = input[j];
 
@@ -250,23 +250,32 @@ void findWay(int size, int** grafCopy) // pow(size,0.5)
 			bufferoutput[k] = -1;
 		}
 	}
+
+	delete[] bufferinput;
+
+	delete[] bufferoutput;
+
+	delete[] input;
+
+	delete[] output;
+
 }
 
 void START()
 {
 	//int** graf = getGrafFromFile();
-	
+
 	//int size = getSize();                             
 
-	const int size = 25;
+	const int size = 1000000;
 
-	int** graf = new int* [size];
+	int** graf = new int* [pow(size, 0.5)];
 
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < pow(size, 0.5); i++)
 	{
-		graf[i] = new int[size];
+		graf[i] = new int[pow(size, 0.5)];
 
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < pow(size, 0.5); j++)
 		{
 			if (i != j)
 			{
@@ -279,23 +288,37 @@ void START()
 			}
 		}
 	}
-	int** copyGraf = new int*[pow(size,0.5)];
+	int** copyGraf = new int* [pow(size, 0.5)];
 
-	for (int i = 0; i < pow(size,0.5); i++)
+	for (int i = 0; i < pow(size, 0.5); i++)
 	{
 		copyGraf[i] = new int[pow(size, 0.5)];
 
 		for (int j = 0; j < pow(size, 0.5); j++)
 		{
-			std::cout << graf[i][j] << " ";
+			//std::cout << graf[i][j] << " ";
 
 			copyGraf[i][j] = graf[i][j];
 		}
 
-		std::cout << std::endl;
+		//std::cout << std::endl;
 	}
 
-	findWay(pow(size,0.5), copyGraf);
+	findWay(pow(size, 0.5), copyGraf);
+
+	for (int i = 0; i < pow(size, 0.5); i++)
+	{
+		delete[] graf[i];
+	}
+
+	delete[] graf;
+
+	for (int i = 0; i < pow(size, 0.5); i++)
+	{
+		delete[] copyGraf[i];
+	}
+
+	delete[] copyGraf;
 }
 
 int main()
