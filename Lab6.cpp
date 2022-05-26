@@ -179,14 +179,14 @@ void findWay(int size, int** grafCopy) // pow(size,0.5)
 
 	int normSize = getCountOfOutputs(output);
 
-	//std::cout << std::endl;
+	std::cout << std::endl;
 
 	for (int i = 0; input[i] != -1; i++)
 	{
-		//std::cout << output[i] << " " << input[i] << std::endl;
+		std::cout << output[i] << " " << input[i] << std::endl;
 	}
 
-	//std::cout << std::endl;
+	std::cout << std::endl;
 
 	int* bufferinput = new int[normSize + 1];
 
@@ -263,31 +263,10 @@ void findWay(int size, int** grafCopy) // pow(size,0.5)
 
 void START()
 {
-	//int** graf = getGrafFromFile();
+	int** graf = getGrafFromFile();
 
-	//int size = getSize();                             
+	int size = getSize();                             
 
-	const int size = 1000000;
-
-	int** graf = new int* [pow(size, 0.5)];
-
-	for (int i = 0; i < pow(size, 0.5); i++)
-	{
-		graf[i] = new int[pow(size, 0.5)];
-
-		for (int j = 0; j < pow(size, 0.5); j++)
-		{
-			if (i != j)
-			{
-				graf[i][j] = rand() % 2;
-			}
-
-			else
-			{
-				graf[i][j] = 0;
-			}
-		}
-	}
 	int** copyGraf = new int* [pow(size, 0.5)];
 
 	for (int i = 0; i < pow(size, 0.5); i++)
@@ -296,12 +275,12 @@ void START()
 
 		for (int j = 0; j < pow(size, 0.5); j++)
 		{
-			//std::cout << graf[i][j] << " ";
+			std::cout << graf[i][j] << " ";
 
 			copyGraf[i][j] = graf[i][j];
 		}
 
-		//std::cout << std::endl;
+		std::cout << std::endl;
 	}
 
 	findWay(pow(size, 0.5), copyGraf);
@@ -325,11 +304,6 @@ int main()
 {
 	srand(time(0));
 
-	for (int i = 0; i < 5; i++)
-	{
-		START();
-
-		std::cout << std::endl;
-	}
+	START();
 }
 
