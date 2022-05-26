@@ -71,7 +71,7 @@ bool IsArrHasAllDots(int* arr, int size) // pow(size,0.5)
 
 	for (int i = 0; i < size; i++)
 	{
-		for (int j = 0; j < pow(size,2); j++)
+		for (int j = 0; arr[j] != -1; j++)
 		{
 			if (arr[j] == i)
 			{
@@ -80,35 +80,72 @@ bool IsArrHasAllDots(int* arr, int size) // pow(size,0.5)
 				break;
 			}
 		}
+
+		if (i != count - 1)
+		{
+			return 0;
+		}
 	}
 
 	return count == size;
+}
+
+bool ifGrafEmpty(int** grafCopy, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			if (grafCopy[i][j] == 1)
+			{
+				return 0;
+			}
+		}
+	}
+
+	return 1;
 }
 
 void getInputAndOutput(int* input, int* output, int size, int** grafCopy)
 {
 	int pointer = 0;
 
-	for (int i = 0; i < size; i++)
+	int i = 0;
+
+	int j = 0;
+
+	while (true)
 	{
-		for (int j = 0; j < size; j++)
+		for (i = 0; i < size; i++)
 		{
-			if (i != j && grafCopy[i][j] == 1)
+			for (j = 0; j < size; j++)
 			{
-				output[pointer] = i;
+				if (i != j && grafCopy[i][j] == 1)
+				{
+					output[pointer] = i;
 
-				input[pointer] = j;
+					input[pointer] = j;
 
-				grafCopy[i][j] = 0;
-				
-				i = j;
+					grafCopy[i][j] = 0;
 
-				j = -1;
+					i = j;
 
-				pointer++;
+					j = -1;
+
+					pointer++;
+				}
+			}
+		}
+
+		if (i == j && i == size)
+		{
+			if (ifGrafEmpty(grafCopy, size))
+			{
+				break;
 			}
 		}
 	}
+
 }
 
 int getCountOfOutputs(int* output)
@@ -151,11 +188,11 @@ void findWay(int size, int** grafCopy) // pow(size,0.5)
 
 	std::cout << std::endl;
 
-	int* bufferinput = new int[normSize];
+	int* bufferinput = new int[normSize + 1];
 
-	int* bufferoutput = new int[normSize];
+	int* bufferoutput = new int[normSize + 1];
 
-	for (int i = 0; i < normSize; i++)
+	for (int i = 0; i < normSize + 1; i++)
 	{
 		bufferinput[i] = -1;
 
@@ -164,9 +201,13 @@ void findWay(int size, int** grafCopy) // pow(size,0.5)
 
 	int j = 0;
 
-	for (int i = 0; i < normSize; i++)
+	bool b1;
+
+	bool b2;
+
+	for (int i = 0; output[i] != -1; i++)
 	{
-		for ( j = 0; j < normSize; j++)
+		for ( j = 0; output[j] != -1; j++)
 		{
 			bufferinput[j] = input[j];
 
@@ -174,9 +215,14 @@ void findWay(int size, int** grafCopy) // pow(size,0.5)
 
 			if (output[i] == input[j])
 			{
-				if (IsArrHasAllDots(bufferoutput, size))
+				b1 = IsArrHasAllDots(bufferoutput, size);
+
+				if (b1)
 				{
-					if (IsArrHasAllDots(bufferinput, size))
+
+					b2 = IsArrHasAllDots(bufferinput, size);
+
+					if (b2)
 					{
 						std::cout << "Yra)";
 
@@ -188,49 +234,51 @@ void findWay(int size, int** grafCopy) // pow(size,0.5)
 
 		if (output[i] == input[j])
 		{
-			if (IsArrHasAllDots(bufferoutput, size))
+			if (b1)
 			{
-				if (IsArrHasAllDots(bufferinput, size))
+				if (b2)
 				{
 					break;
 				}
 			}
 		}
 
-		for (int i = 0; i < normSize; i++)
+		for (int k = 0; k < normSize; k++)
 		{
-			bufferinput[i] = -1;
+			bufferinput[k] = -1;
 
-			bufferoutput[i] = -1;
+			bufferoutput[k] = -1;
 		}
 	}
 }
 
 void START()
 {
-	int** graf = getGrafFromFile();
+	//int** graf = getGrafFromFile();
 	
-	int size = getSize();
+	//int size = getSize();                             
 
-	/*int size = pow(rand() % 4 + 2,2);              ....... ПРОВЕРКА .........
+	const int size = 25;
 
-	int** graf = new int* [pow(size,0.5)];
+	int** graf = new int* [size];
 
-	for (int i = 0; i < pow(size, 0.5); i++)
+	for (int i = 0; i < size; i++)
 	{
-		graf[i] = new int[pow(size, 0.5)];
+		graf[i] = new int[size];
 
-		for (int j = 0; j < pow(size, 0.5); j++)
+		for (int j = 0; j < size; j++)
 		{
-			graf[i][j] = rand() % 2;
+			if (i != j)
+			{
+				graf[i][j] = rand() % 2;
+			}
 
-			if (i == j)
+			else
 			{
 				graf[i][j] = 0;
 			}
-		}                                             ........ПРОВЕРКА.......
-	}*/                                              
-
+		}
+	}
 	int** copyGraf = new int*[pow(size,0.5)];
 
 	for (int i = 0; i < pow(size,0.5); i++)
@@ -254,6 +302,11 @@ int main()
 {
 	srand(time(0));
 
-	START();
+	for (int i = 0; i < 5; i++)
+	{
+		START();
+
+		std::cout << std::endl;
+	}
 }
 
